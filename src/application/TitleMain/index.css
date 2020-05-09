@@ -1,0 +1,28 @@
+.paper_main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.paper_body {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+}
+.paper_body_header {
+    font-size: 40px;
+    font-weight: 600;
+}
+.paper_body_createTime, .paper_body_count, .paper_body_maxScore, .paper_body_titleTotal{
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 30px;
+}
+.paper_body_btn {
+    margin-top: 80px;
+    font-size: 20px;
+    width: 200px;
+    height: 60px;
+}

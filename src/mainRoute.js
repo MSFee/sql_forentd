@@ -8,8 +8,12 @@ import TeacherMain from "./application/TeacherMain";
 import PaperDetail from "./application/PaperDetail";
 
 //学生端
-import StudentMain from "./application/StudentMain"
+import StudentMain from "./application/StudentMain";
+import TitleMain from './application/TitleMain';
+import TitleDetail from './application/TitleDetail';
+
 import history from './util/history';
+
 
 const text = <span>个人信息</span>;
 const content = (
@@ -47,6 +51,8 @@ export default () => {
           component={PaperDetail}
         />
         <Route path="/main/student" component={StudentMain}/>
+        <Route path="/main/answerTitle" component={TitleMain}/>
+        <Route path="/main/titleDetail" component={TitleDetail}/>
       </Switch>
     </div>
   );

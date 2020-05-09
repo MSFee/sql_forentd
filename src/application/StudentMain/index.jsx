@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { Table, Button, Form, Input, Icon, Radio, message } from "antd";
 
+import history from "../../util/history";
+
 import { getStudentPaper } from "../../api/index";
 
 import "./index.css";
@@ -31,10 +33,15 @@ const columns = [
     key: "paperId",
     width: "10%",
     render: (text, record) => {
-      return <a key={text}>编辑</a>;
+      return <a key={text} onClick={() => toAnswer(record.paperId)}>开始答题</a>;
     },
   },
 ];
+
+function toAnswer(paperId) {
+  history.push(`/main/answerTitle/${paperId}`)
+}
+
 let StudentMainNormal = (props) => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);

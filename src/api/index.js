@@ -27,3 +27,5 @@ export const displayTitle=(data)=>http.put('/teacher/publishPaper',data);
 
 //学生拉取所有老师的试卷信息
 export const getStudentPaper=(query)=>http.get('/student/getPaperList',query)
+// 学生拉取某一张试卷的信息
+export const getPaperInfo = (query) => http.get('/student/getPaperInfo', query)
