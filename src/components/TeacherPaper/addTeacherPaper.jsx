@@ -22,6 +22,7 @@ export default props=> {
         }
       })
       setVisible(false);
+      setPaperTitle("");
   }
   function handleChangePaperTitle(e){
     setPaperTitle(e.target.value);

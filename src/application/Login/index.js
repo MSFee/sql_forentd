@@ -17,7 +17,7 @@ export default () => {
   const [status, setStatus] = useState(0);
 
   function TabChange(key) {
-    console.log(key);
+    
     setStatus(key);
   }
   return (

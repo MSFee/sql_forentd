@@ -3,7 +3,7 @@ import React,{Fragment} from 'react';
 import {Icon,Modal,Tooltip, message} from 'antd';
 
 import {deleteTeacherPaper} from '../../api/index'
-const text = <span>删除产品</span>;
+const text = <span>删除试卷</span>;
 export default props => {
   const { index, query } = props;
   function onMadal(index) {
@@ -21,11 +21,11 @@ export default props => {
        deleteTeacherPaper(index).then(res=>{
          if(res.error==0){
            message.success(res.message)
+           query();
          }else{
            message.error(res.message);
          }
        })
-       query();
     };
   }
   return (

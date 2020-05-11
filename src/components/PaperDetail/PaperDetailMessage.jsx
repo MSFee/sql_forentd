@@ -10,11 +10,11 @@ export default (props)=>{
     let queryPaperDetail=useCallback(
         () => {
             getTitleAll(paperId).then(res=>{
-                console.log("响应的内容是");
-                console.log(res)
+                
+                
                 if(res.error==0){
                     setDetailMessage(res.paperInfo);
-                    console.log(res.paperInfo)
+                    
                 }
             })
         },
@@ -26,7 +26,7 @@ export default (props)=>{
     return (
         <div>
             <div>
-            <div className="paperdetail-papername">创建人</div>
+            <div className="paperdetail-papername">试卷名称</div>
             <div className="paperdetail-name2">{detailMessage.paperName}</div>
             <div className="paperdetail-creattime">创建时间</div>
             <div className="paperdetail-time2">{detailMessage.createTime}</div>
@@ -39,7 +39,7 @@ export default (props)=>{
                 <div>
                     <div className="paperdetail-papername">最高分:</div>
                     <div className="detail-maxscore">{detailMessage.maxScore}分</div>
-                    </div>:<div className="detail-maxscore">暂无最高分</div>
+                </div>:<div className="detail-maxscore">暂无最高分</div>
                 }
             </div>
             <Button type="primary" className="detail-button">详情统计</Button>

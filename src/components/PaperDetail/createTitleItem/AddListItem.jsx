@@ -20,10 +20,8 @@ const NormalLoginForm = props => {
     props.form.validateFields(async (err, values) => {
       if (!err) {
           values.paperId=paperId
-          console.log(values);
+          
           createTitle(values).then(res=>{
-              console.log("开始打印");
-              console.log(res);
               if(res.error==0){
                   message.success(res.message);
                   queryPaperDetail();
@@ -34,6 +32,20 @@ const NormalLoginForm = props => {
         setVisible(false);
       }
     });
+  }
+  const checkScore = (rule, value) => {
+    if(!value) {
+      return Promise.reject('分数不能为空')
+    }
+    if(typeof Number(value) === 'number') {
+      if(Number(value) > 100 || Number(value) <= 0) {
+        return Promise.reject('分数大小为1-99')
+      }else {
+         return Promise.resolve()
+      }
+    }else {
+      return Promise.reject('只能填写数字')
+    }
   }
   return (
     <div className="product-header">
@@ -55,6 +67,11 @@ const NormalLoginForm = props => {
             {getFieldDecorator("titleName", {
               rules: [{ required: true, message: "题目不能为空" }]
             })(<Input placeholder="输入题目描述" />)}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator("score", {
+              rules: [{ validator: checkScore }]
+            })(<Input placeholder="请输入分数" />)}
           </Form.Item>
           <Form.Item>
             {getFieldDecorator("answer", {

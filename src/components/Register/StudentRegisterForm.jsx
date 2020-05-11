@@ -12,10 +12,10 @@ let StudentRegisterForm = (props) => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("学生注册表单的值");
+        
         values.status=status
         getRegister(values).then(res=>{
-            console.log(res);
+            
             if(res.error==0){
                 message.success(res.message);
                 history.push('/login');

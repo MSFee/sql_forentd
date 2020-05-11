@@ -1,0 +1,107 @@
+.title_body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-user-select: none;
+    overflow: hidden;
+}
+.title_body_main {
+    width: 80%;
+    height: 600px;
+    margin-top: 20px;
+    background-color: #fff;
+    position: relative;
+}
+.title_body_paperName {
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px solid  rgb(221,221,221);
+    line-height: 80px;
+    font-size: 25px;
+    font-weight: 600;
+    padding-left: 50px;
+}
+.titile_body_content {
+    width: 95%;
+    padding-left: 50px;
+    font-size: 20px;
+}
+.title_body_header {
+    margin-top: 30px;
+    font-size: 20px;
+}
+.title_body_answer {
+    width: 80%;
+    margin-top: 30px;
+}
+.title_answer {
+    display: block;
+    margin-bottom: 20px;
+}
+.title_body_foolter {
+    margin-top: 20px;
+    width: 100%;
+    height: 180px;
+    position: relative;
+}
+.title_foolter_btn {
+    position: absolute;
+    right: 50px;
+    bottom: 20px;
+    font-size: 15px;
+}
+.title_submit {
+    width: 111px;
+    height: 40px;
+    margin-right: 20px;
+}
+.title_nextTitle {
+    width: 111px;
+    height: 40px;
+}
+
+.title_result {
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.title_result div {
+
+}
+.title_submitPaper {
+    position: absolute;
+    left: 40%;
+    transform: translateX(-50%);
+    bottom: 0;
+}
+.sheet {
+    width: 100%;
+    padding: 20px;
+    height: 120px;
+    border-top: 1px dashed  rgb(221,221,221);
+    position: absolute;
+    bottom: 0;
+}
+.sheet_item {
+    float: left;
+    width: 42px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    color: #ccc;
+    margin-left: 5px;
+}
+.sheet_item:hover {
+    color: #fff !important;
+    background-color: rgb(37,187,155);
+}
+.success_submit {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -2,24 +2,31 @@ import React, { Fragment } from 'react';
 
 import {Button, message} from 'antd';
 
-import {displayTitle} from '../../../api/index';
+import {displayTitle, getQueryPaperHaveCompalte} from '../../../api/index';
 export default (props) => {
-        let {paperId,issue,queryPaperDetail}=props;
-    function uploadTitle(){
-        console.log({
-            paperId:paperId,
-            issued:issue
-        })
-        if(issue==1){
-            issue=0
-        }else{
-            issue=1
+    let {paperId,issue,queryPaperDetail}=props;
+    function release(){
+        issue=1;
+        queryData();
+    }
+    function publication() {
+        const value = {
+            paperId,
         }
+        getQueryPaperHaveCompalte(value).then(res => {
+            if(res.hasComplate) {
+                message.warning(res.message)
+            }else {
+                issue = 0;
+                queryData();
+            }
+        })
+    }
+    function queryData() {
         displayTitle({
             paperId:paperId,
             issued:issue
         }).then(res=>{
-            console.log(res)
             if(res.error==0){
                 message.success(res.message);
                 queryPaperDetail();
@@ -28,15 +35,14 @@ export default (props) => {
             }
         })
     }
-
     function setNation(){
         if(issue){
-            return (<Button icon="download" type="primary" onClick={uploadTitle}>
-            撤销题目
+            return (<Button icon="download" type="primary" onClick={publication}>
+            撤销发布
           </Button>)
         }else{
-            return (<Button icon="upload" type="primary" onClick={uploadTitle}>
-            发布题目
+            return (<Button icon="upload" type="primary" onClick={release}>
+            发布试卷
           </Button>)
     }
 }

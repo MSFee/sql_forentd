@@ -24,7 +24,7 @@ export default (props)=>{
               }else{
                   message.error(res.message)
               }
-              console.log(res);
+              
           })
         }
     }

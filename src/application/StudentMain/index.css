@@ -1,6 +1,7 @@
 .studentmain-main{
     margin: 20px;
     padding: 20px;
+    overflow: hidden;
 }
 .studentmain-form{
     display: flex;
@@ -17,4 +18,6 @@
 }
 .studentmain-sub .ant-form-item{
     display: flex;
+}
+.display_card {
 }

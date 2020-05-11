@@ -13,10 +13,10 @@ let StudentLoginForm = (props) => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("学生表单的值");
-        console.log(values);
+        
+        
         values.status=status;
-        console.log(values);
+        
         getLogin(values).then(res=>{
           if(res.error==0){
               message.success(res.message);

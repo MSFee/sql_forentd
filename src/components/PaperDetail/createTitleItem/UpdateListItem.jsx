@@ -23,11 +23,11 @@ const NormalLoginForm = props => {
     props.form.validateFields(async (err, values) => {
       if (!err) {
           values.titleId=titleId;
-          console.log(titleId);
-          console.log(values)
+          
+          
           updateTitle(values).then(res=>{
-              console.log("开始更新");
-              console.log(res);
+              
+              
               if(res.error==0){
                   message.success(res.message);
                   queryPaperDetail();
