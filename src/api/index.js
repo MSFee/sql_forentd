@@ -20,10 +20,14 @@ export const deleteTitle=(titleId)=>http.delete('/teacher/deleteTitle',{titleId}
 export const createTitle=(data)=>http.post('/teacher/createTitle',data);
 //教师修改指定titleId题目
 export const updateTitle=(titleId)=>http.post('/teacher/changeTitleInfo',titleId);
-//教师发布题目
+//教师发布试卷
 export const displayTitle=(data)=>http.put('/teacher/publishPaper',data);
 // 教师查询是否可以撤销发布试卷
 export const getQueryPaperHaveCompalte = (query) => http.get('/teacher/queryPaperHaveCompalte', query);
+// 教师查询是否可以发布试卷
+export const getQueryPaperCanPublic = (query) => http.get('/teacher/queryPaperCanPublic', query);
+// 教师测试答案是否可以正常运行
+export const getTestAnswer = (data) => http.post('/teacher/testAnswer', data);
 
 
 //学生拉取所有老师的试卷信息
@@ -44,3 +48,7 @@ export const completePaper = (data) => http.post('/student/completePaper', data)
 export const submitPaper = (data) => http.post('/student/submitPaper', data);
 // 查询学生是否完成了某一张试卷
 export const getPaperBeenCompleted = (query) => http.get('/student/paperBeenCompleted', query);
+// 学生提交结果差异对比
+export const getResultContrast = (data) => http.post('/student/resultContrast', data);
+// 学生获取历史记录
+export const getAllComplatePaper = (query) => http.get('/student/getAllComplatePaper', query);

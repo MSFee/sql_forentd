@@ -8,36 +8,10 @@ import { getStudentPaper } from "../../api/index";
 
 import "./index.css";
 const { Meta } = Card;
-const columns = [
-  {
-    title: "试卷名称",
-    dataIndex: "paperName",
-    key: "paperName",
-    width: "30%",
-  },
-  {
-    title: "创建老师",
-    dataIndex: "userName",
-    key: "userName",
-    width: "20%",
-  },
-  {
-    title: "创建时间",
-    dataIndex: "createTime",
-    key: "createTime",
-    width: "20%",
-  },
-  {
-    title: "操作",
-    dataIndex: "paperId",
-    key: "paperId",
-    width: "10%",
-    render: (text, record) => {
-      return <a key={text} onClick={() => toAnswer(record.paperId)}>开始答题</a>;
-    },
-  },
-];
-
+const obj = {
+  page: 1,
+  size: 10
+}
 function toAnswer(paperId) {
   history.push(`/main/answerTitle/${paperId}`)
 }
@@ -45,84 +19,77 @@ function toAnswer(paperId) {
 let StudentMainNormal = (props) => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
-  const [pageSize, setPageSize] = useState(0);
-  const [current, setCurrent] = useState(0);
+  const [pageSize, setPageSize] = useState(1);
+  const [current, setCurrent] = useState(1);
+  const [currentSelect, setCurrentSelect] = useState(null)
+  const {form} = props;
   const { getFieldDecorator } = props.form;
 
   useEffect(() => {
-    getStudentPaper().then((res) => {
+    getData({})
+  }, []);
+  const onReset = () => {
+    form.resetFields();
+  };
+  function getData(values) {
+    values.page = obj.page;
+    values.size = obj.size;
+    getStudentPaper(values).then((res) => {
       if (res.error == 0) {
         setData(res.list);
-        setTotal(res.page);
+        setTotal(res.total);
         setPageSize(res.size);
         setCurrent(res.page);
       }
     });
-  }, []);
-
+  }
   function handleSubmit(e) {
-    e.preventDefault();
+    e && e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        
-        if (values.accordSelect == 1) {
-          values.accordTime = 1;
-          delete values.accordSelect;
-          getStudentPaper(values).then((res) => {
-            
-            if (res.error == 0) {
-              setData(res.list);
-              setTotal(res.total);
-              setPageSize(res.size);
-              setCurrent(res.page);
-            }
-          });
-        } else if (values.accordSelect == 2) {
-          values.accordHeat = 1;
-          delete values.accordSelect;
-          getStudentPaper(values).then((res) => {
-            
-            if (res.error == 0) {
-              setData(res.list);
-              setTotal(res.total);
-              setPageSize(res.size);
-              setCurrent(res.page);
-            }
-          });
-        } else {
-          delete values.accordSelect;
-          getStudentPaper(values).then((res) => {
-            
-            if (res.error == 0) {
-              setData(res.list);
-              setTotal(res.total);
-              setPageSize(res.size);
-              setCurrent(res.page);
-            }
-          });
+        if(currentSelect === 1) {
+           latest()
+        }else if(currentSelect === 2) {
+          hottest()
+        }else {
+          getData(values)
         }
       }
     });
   }
-
+  function screening(obj) {
+    const school = form.getFieldValue('school');
+    const userName = form.getFieldValue("userName");
+    if(school) {
+       obj.school = school;
+    }
+    if(userName) {
+      obj.userName = userName;
+    }
+    getData(obj);
+  }
+  function latest() {
+    screening({accordHeat: 1})
+    setCurrentSelect(1)
+  }
+  function hottest() {
+    screening({accordTime: 1})
+    setCurrentSelect(2)
+  }
   return (
     <div className="studentmain-main">
       <div className="studentmain-sub">
-        <div>
-          <Form className="studentmain-form" onSubmit={handleSubmit}>
-            <Form.Item>
-              {getFieldDecorator("accordSelect", { valuePropName: "checked" })(
-                <Radio.Group defaultValue="a" buttonStyle="solid">
-                  <Radio.Button value="1">最新</Radio.Button>
-                  <Radio.Button value="2">最热</Radio.Button>
+        <div >
+           <Radio.Group defaultValue="a" buttonStyle="solid">
+                  <Radio.Button value="1" onClick={latest}>最新</Radio.Button>
+                  <Radio.Button value="2" onClick={hottest}>最热</Radio.Button>
                 </Radio.Group>
-              )}
-            </Form.Item>
+          <Form className="studentmain-form" onSubmit={handleSubmit}>
+
             <Form.Item>
               {getFieldDecorator("userName", {
                 rules: [
                   {
-                    required: true,
                     message: "请输入你筛选的老师",
                   },
                 ],
@@ -139,7 +106,6 @@ let StudentMainNormal = (props) => {
               {getFieldDecorator("school", {
                 rules: [
                   {
-                    required: true,
                     message: "请输入你要筛选的学校",
                   },
                 ],
@@ -161,6 +127,11 @@ let StudentMainNormal = (props) => {
                 筛选
               </Button>
             </Form.Item>
+            <Form.Item>
+              <Button htmlType="button" onClick={onReset}>
+                  重置
+                </Button>
+            </Form.Item>
           </Form>
         </div>
       </div>
@@ -171,6 +142,18 @@ let StudentMainNormal = (props) => {
         pagination={{ total: total, pageSize: pageSize, current: current }}
       /> */}
       <List
+          pagination={{
+            onChange: page => {
+              if(page === obj.page) {
+                return;
+              }
+              obj.page = page
+              handleSubmit()
+            },
+            total,
+            current,
+            pageSize: obj.size,
+          }}
           grid={{
             gutter: 290,
             xs: 2,

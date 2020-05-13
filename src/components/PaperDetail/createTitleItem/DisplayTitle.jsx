@@ -2,17 +2,23 @@ import React, { Fragment } from 'react';
 
 import {Button, message} from 'antd';
 
-import {displayTitle, getQueryPaperHaveCompalte} from '../../../api/index';
+import {displayTitle, getQueryPaperHaveCompalte, getQueryPaperCanPublic} from '../../../api/index';
 export default (props) => {
     let {paperId,issue,queryPaperDetail}=props;
+    const value = {
+        paperId,
+    }
     function release(){
-        issue=1;
-        queryData();
+        getQueryPaperCanPublic(value).then(res => {
+            if(!res.canPublic) {
+                message.warning('不能发布空试卷')
+            }else {
+                issue = 1;
+                queryData();
+            }
+        })
     }
     function publication() {
-        const value = {
-            paperId,
-        }
         getQueryPaperHaveCompalte(value).then(res => {
             if(res.hasComplate) {
                 message.warning(res.message)

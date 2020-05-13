@@ -4,10 +4,10 @@ import { Form, Icon, Input, Button, message } from "antd";
 import {getRegister} from '../../api/index';
 import history from "../../util/history";
 let StudentRegisterForm = (props) => {
-    const {status}=props;
+    const {status,form}=props;
     const [confirmDirty, setConfirmDirty] = useState(false)
-   const { getFieldDecorator } = props.form;
-
+   const { getFieldDecorator } = form;
+   form.resetFields();
   function handleSubmit(e) {
     e.preventDefault();
     props.form.validateFields((err, values) => {

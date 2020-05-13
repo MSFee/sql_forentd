@@ -20,8 +20,6 @@ export default () => {
       if (res.error == 0) {
         setTitleList(res.titleList)
         setIssue(res.paperInfo.issued)
-        
-        
       }
     })
   }
@@ -46,6 +44,7 @@ export default () => {
                 <UpdateListItem
                   titleId={item.titleId}
                   titleName={item.titleName}
+                  score={item.score}
                   answer={item.answer}
                   queryPaperDetail={queryPaperDetail}
                 />,

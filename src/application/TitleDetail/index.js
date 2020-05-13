@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Input, Button, message, Modal, Result, Spin } from 'antd'
+import { Input, Button, message, Modal, Result, Spin, Drawer, Table } from 'antd'
 
 import history from '../../util/history'
 import {
@@ -9,7 +9,8 @@ import {
   completeTitle,
   getTitleStatus,
   completePaper,
-  submitPaper
+  submitPaper,
+  getResultContrast
 } from '../../api/index'
 import './index.css'
 
@@ -25,6 +26,16 @@ export default () => {
   const [isSubmit, setIsSubmit] = useState(false)
   const [submitStatus, setSubmitStaus] = useState(false)
   const [isSubmitCompleted, setIsSubmitCompleted] = useState(false)
+  const [visible, setVisible] = useState(false)
+
+  const [truePerform, setTruePerform] = useState(true);
+  const [student_columns, setStudentColumns] = useState([])
+  const [student_tableList, setStudentTableList] = useState([])
+  const [true_columns, setTrueColumns] = useState([])
+  const [true_tableList, setTrueTableList] = useState([])
+  const [errorMessage, setErrorMessage] = useState('')
+  const [score, setScore] = useState(null)
+
   let params = window.location.href
   let hrefArr = params.split('?').pop()
   hrefArr = hrefArr.split('&')
@@ -53,7 +64,7 @@ export default () => {
     })
     getTitleDetailInfo(values2).then(res => {
       const info = res.info
-      
+
       setTitleName(info.titleName)
       setPaperName(info.paperName)
     })
@@ -121,13 +132,13 @@ export default () => {
   }
   function modelOk (close) {
     submitPaper(values).then(res => {
+      setScore(res.score)
       close()
-      setSubmitStaus(true);
+      setSubmitStaus(true)
       setTimeout(() => {
         setIsSubmitCompleted(true)
-      }, 3000);
+      }, 3000)
     })
-
   }
   function theirPapers () {
     completePaper(values).then(res => {
@@ -148,8 +159,66 @@ export default () => {
       }
     })
   }
-  function toHome() {
-    history.replace('/main/student');
+  function toHome () {
+    history.replace('/main/student')
+  }
+  function onClose () {
+    setVisible(false)
+  }
+  function setColumnsAndTableList(info, setColumns, setTableList, kind) {
+    if(info.truePerform) {
+      const resultList = info.resultList;
+      const temColumns = [];
+      kind === 'student' && setTruePerform(true)
+      if(resultList.length) {
+        const obj = resultList[0];
+        for(let key in obj) {
+         const temObj = {};
+         temObj.title = key;
+         temObj.dataIndex = key;
+         temObj.key = obj[key];
+         temColumns.push(temObj);
+        }
+        setColumns(temColumns);
+        setTableList(resultList);
+      }
+    }else {
+      kind === 'student' && setTruePerform(false)
+      kind === 'student' && setErrorMessage(info.message)
+    }
+  }
+  function resultContrast () {
+    getResultContrast(values2).then(res => {
+        setColumnsAndTableList(res.studentInfo, setStudentColumns, setStudentTableList,'student');
+        setColumnsAndTableList(res.trueInfo, setTrueColumns, setTrueTableList);
+    })
+    setVisible(true)
+  }
+  function openDrawer() {
+    return (
+      <Drawer
+        title='结果比较'
+        placement='right'
+        closable={false}
+        width={1400}
+        onClose={onClose}
+        visible={visible}
+      >
+        <div className="drawer_main">
+          <div className="drawer_main_student">
+            <header>我的执行结果</header>
+           { truePerform ? <Table columns={student_columns}
+              dataSource={student_tableList} pagination={false}/>
+              : <div style={{color:'red', marginTop: '50px'}}>{errorMessage}</div>}
+          </div>
+          <div className="drawer_main_teacher">
+            <header >正确执行结果</header>
+            <Table columns={true_columns}
+              dataSource={true_tableList} pagination={false}/>
+          </div>
+        </div>
+      </Drawer>
+    )
   }
   useEffect(() => {
     getAllTitle()
@@ -165,9 +234,13 @@ export default () => {
               status='success'
               title='提交成功!'
               extra={[
+              <div>
+                <div style={{marginBottom: "20px", fontSize: "20px"}}>我的分数: {score}分</div>
                 <Button type='primary' key='console' onClick={toHome}>
                   返回首页
                 </Button>
+              </div>
+
               ]}
             />
           )}
@@ -192,6 +265,13 @@ export default () => {
                       <span style={{ color: 'red' }}>答案错误!</span>
                     )}
                   </div>
+                  <Button
+                    onClick={resultContrast}
+                    style={{ width: '120px' }}
+                    type='primary'
+                  >
+                    结果对比
+                  </Button>
                 </div>
               ) : null}
               <div className='title_submitPaper'>
@@ -226,6 +306,7 @@ export default () => {
             </div>
           </div>
           {renderSheet()}
+          {openDrawer()}
         </main>
       )}
     </div>

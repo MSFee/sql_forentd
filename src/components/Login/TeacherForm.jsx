@@ -6,9 +6,9 @@ import {getLogin} from '../../api/index';
 import history from "../../util/history";
 
 let TeacherLoginForm = (props) => {
-    const {status}=props
-  const { getFieldDecorator } = props.form;
-
+  const {status, form}=props
+  
+  const { getFieldDecorator } = form;
   function handleSubmit(e) {
     e.preventDefault();
     props.form.validateFields((err, values) => {

@@ -11,19 +11,23 @@ import PaperDetail from "./application/PaperDetail";
 import StudentMain from "./application/StudentMain";
 import TitleMain from './application/TitleMain';
 import TitleDetail from './application/TitleDetail';
+import PaperStatistical from './application/PaperStatistical';
+
+import HisrotyRecord from './application/HisrotyRecord';
 
 import history from './util/history';
 
 
-const text = <span>个人信息</span>;
 const content = (
-  <div>
-    <p>学号</p>
-    <p>邮箱</p>
-    <hr/>
+  <div className="header_menu" style={{cursor: "pointer"}}>
+    <p onClick={historyRecord}>历史记录</p>
     <p onClick={loginOutFunc}>退出登录</p>
   </div>
 );
+
+function historyRecord() {
+  history.push('/main/hisrotyRecord')
+}
 
 function loginOutFunc(){
     localStorage.clear();
@@ -37,9 +41,8 @@ export default () => {
       <div className="main-navbar">
         <Popover
           placement="bottomRight"
-          title={text}
           content={content}
-          trigger="click"
+          trigger="hover"
         >
           <Avatar className="loginout" size="large" icon="user" />
         </Popover>
@@ -53,6 +56,8 @@ export default () => {
         <Route path="/main/student" component={StudentMain}/>
         <Route path="/main/answerTitle" component={TitleMain}/>
         <Route path="/main/titleDetail" component={TitleDetail}/>
+        <Route path="/main/paperStatistical" component={PaperStatistical} />
+        <Route path="/main/hisrotyRecord" component={HisrotyRecord} />
       </Switch>
     </div>
   );

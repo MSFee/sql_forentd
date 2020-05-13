@@ -43,6 +43,12 @@ let TeacherRegisterForm = (props) => {
     }
     callback();
   }
+  function validateCode(rule, value) {
+    if(value !== "SWPU") {
+      return Promise.reject('邀请码不正确');
+    }
+    return Promise.resolve()
+  }
   function handleConfirmBlur(e) {
     const { value } = e.target;
     setConfirmDirty(confirmDirty || !!value);
@@ -148,6 +154,23 @@ let TeacherRegisterForm = (props) => {
               onBlur={handleConfirmBlur}
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
               placeholder="确认密码"
+            />
+          )}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator("inviteCode", {
+            rules: [
+              {
+                required: true,
+                message: "请输入邀请码!",
+              },{
+                validator: validateCode
+              }
+            ],
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              placeholder="邀请码"
             />
           )}
         </Form.Item>

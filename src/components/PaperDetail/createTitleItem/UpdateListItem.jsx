@@ -1,22 +1,72 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Modal, message } from "antd";
-import {updateTitle} from '../../../api/index';
+import { Form, Input, Modal, message, Button, Drawer, Table } from "antd";
+import {updateTitle, getTestAnswer} from '../../../api/index';
 const { TextArea } = Input;
 const NormalLoginForm = props => {
-    const {titleName,answer,titleId,queryPaperDetail}=props;
+  const {titleName,answer,score,titleId,queryPaperDetail}=props;
   const { getFieldDecorator,setFieldsValue } = props.form;
   const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    setFieldsValue({
-        titleName:titleName,
-        answer:answer
-    })
-  }, [])
+  const [sqlTestVisible, setSqlTestVisible] = useState(false)
+  const [columns, setColumns] = useState([])
+  const [tableList, setTableList] = useState([])
   function showModal() {
+    setFieldsValue({
+      titleName:titleName,
+      answer:answer,
+      score,
+  })
     setVisible(true);
   }
   function handleCancel() {
     setVisible(false);
+  }
+  const checkScore = (rule, value) => {
+    if (!value) {
+      return Promise.reject('分数不能为空')
+    }
+    if (typeof Number(value) === 'number') {
+      if (Number(value) > 100 || Number(value) <= 0) {
+        return Promise.reject('分数大小为1-99')
+      } else {
+        return Promise.resolve()
+      }
+    } else {
+      return Promise.reject('只能填写数字')
+    }
+  }
+  function answerTest () {
+    const answer =  props.form.getFieldValue("answer")
+    if(!answer) {
+      message.warning("请输入sql语句")
+      return
+    }
+    const postValue = {
+      answer,
+    }
+    getTestAnswer(postValue).then(res => {
+      if(res.normalOperation) {
+        const resultList = res.resultList;
+        const temColumns = [];
+        if(resultList.length) {
+          const obj = resultList[0];
+          for(let key in obj) {
+           const temObj = {};
+           temObj.title = key;
+           temObj.dataIndex = key;
+           temObj.key = obj[key];
+           temColumns.push(temObj);
+          }
+        }
+        setColumns(temColumns);
+        setTableList(resultList);
+      }else {
+ 
+      }
+    });
+    setSqlTestVisible(true)
+   }
+   function onClose () {
+    setSqlTestVisible(false)
   }
   function handleSubmit(e) {
     e.preventDefault();
@@ -57,11 +107,30 @@ const NormalLoginForm = props => {
             })(<Input placeholder="输入题目描述" />)}
           </Form.Item>
           <Form.Item>
+            {getFieldDecorator('score', {
+              rules: [{ validator: checkScore }]
+            })(<Input placeholder='请输入分数' />)}
+          </Form.Item>
+          <Form.Item>
             {getFieldDecorator("answer", {
               rules: [{ required: true, message: "答案不能为空" }]
             })(<TextArea placeholder="请输入题目答案" rows={4} />)}
           </Form.Item>
+          <Button type='primary' onClick={answerTest}>
+            答案测试
+          </Button>
         </Form>
+        <Drawer
+          title='结果测试'
+          placement='right'
+          width={820}
+          closable={false}
+          onClose={onClose}
+          visible={sqlTestVisible}
+        >
+          <Table columns={columns}
+        dataSource={tableList} pagination={false}/>
+        </Drawer>
       </Modal>
     </div>
   );
