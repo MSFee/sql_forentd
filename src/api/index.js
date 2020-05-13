@@ -4,6 +4,18 @@ import http from './http';
 export const getRegister=(params)=>http.post('/register',params);
 //登录请求
 export const getLogin=(params)=>http.post('/login',params);
+
+// 校验信息
+export const checkInfo = (params) => http.post('/checkInfo', params)
+// 获取验证码
+export const getValideImg = () => http.get('/getValiteCode')
+
+// 校验邮箱yanzhengma
+export const checkEmail = (params) => http.post('/checkEmail', params);
+
+// 修改密码
+export const getChangePassword = (params) => http.post('/changePassword', params)
+
 //获取指定老师题目信息(token里面自己解析ID)
 export const getAllPaperList=()=>http.get('/teacher/queryMyPaperList');
 //教师创建题目信息
@@ -28,6 +40,8 @@ export const getQueryPaperHaveCompalte = (query) => http.get('/teacher/queryPape
 export const getQueryPaperCanPublic = (query) => http.get('/teacher/queryPaperCanPublic', query);
 // 教师测试答案是否可以正常运行
 export const getTestAnswer = (data) => http.post('/teacher/testAnswer', data);
+// 教师查看试卷的信息
+export const getPaperComplateInfo = (data) => http.get('/teacher/paperComplateInfo', data)
 
 
 //学生拉取所有老师的试卷信息

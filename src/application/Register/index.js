@@ -9,7 +9,7 @@ import IndexLogo from "../../asserts/index_logo.png";
 import StudentRegisterForm from '../../components/Register/StudentRegisterForm';
 import TeacherRegisterForm from '../../components/Register/TeacherRegisterForm';
 
-import "./index.css";
+import "./index.css";   
 
 const { TabPane } = Tabs;
 export default ()=> {

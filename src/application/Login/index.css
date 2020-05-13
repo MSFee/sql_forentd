@@ -16,6 +16,7 @@
     justify-content: center;
     height: calc(100vh - 70px);
     align-items: center;
+    flex-direction: column;
     
 }
 .login-main .login-form{
@@ -36,4 +37,14 @@
 }
 .ant-tabs-nav-scroll{
     text-align: center;
+}
+.more {
+    display: flex;
+    height: 30px;
+    width: 50%;
+    color: #1890ff;
+    justify-content: space-around;
+}
+.more span {
+    cursor: pointer;
 }

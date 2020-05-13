@@ -89,6 +89,13 @@ let TeacherLoginForm = (props) => {
           >
             没有账号？去注册
           </a>
+          <a
+            onClick={() => {
+              history.push("/forgetPassword");
+            }}
+          >
+            忘记密码？
+          </a>
         </div>
         </Fragment>
       )

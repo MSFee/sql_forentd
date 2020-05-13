@@ -1,0 +1,26 @@
+.paperStatistical {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 50px);
+}
+.paperStatistical_main {
+    width: 80%;
+    height: 100%;
+    padding: 20px;
+    background-color: #fff;
+}
+.paperStatistical_main_pass{
+    height: 50px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+.topTen {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
