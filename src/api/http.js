@@ -5,7 +5,8 @@ import { message } from 'antd';
 import history from '../util/history';
 
 let instance = axios.create({
-    baseURL: 'http://127.0.0.1:3500',  // 基础domain
+    baseURL: 'http://106.54.193.152:3500',  // 基础domain
+    // baseURL: 'http://127.0.0.1:3500',
     timeout: 10000,   // 超时5秒
 });
 

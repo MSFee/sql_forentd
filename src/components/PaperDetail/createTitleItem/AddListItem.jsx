@@ -13,12 +13,14 @@ const NormalLoginForm = props => {
   const [sqlTestVisible, setSqlTestVisible] = useState(false)
   const [columns, setColumns] = useState([])
   const [tableList, setTableList] = useState([])
+  const [answerTrue, setAnswerTrue] = useState(false)
+  const [errMessage, setErrMessage] = useState('')
   function showModal () {
     setFieldsValue({
-      titleName:'',
-      answer:'',
-      score: '',
-  })
+      titleName: '',
+      answer: '',
+      score: ''
+    })
     setVisible(true)
   }
   function handleCancel () {
@@ -57,35 +59,37 @@ const NormalLoginForm = props => {
     }
   }
   function answerTest () {
-   const answer =  props.form.getFieldValue("answer")
-   if(!answer) {
-     message.warning("请输入sql语句")
-     return
-   }
-   const postValue = {
-     answer,
-   }
-   getTestAnswer(postValue).then(res => {
-     if(res.normalOperation) {
-       const resultList = res.resultList;
-       const temColumns = [];
-       if(resultList.length) {
-         const obj = resultList[0];
-         for(let key in obj) {
-          const temObj = {};
-          temObj.title = key;
-          temObj.dataIndex = key;
-          temObj.key = obj[key];
-          temColumns.push(temObj);
-         }
-       }
-       setColumns(temColumns);
-       setTableList(resultList);
-     }else {
-
-     }
-   });
-   setSqlTestVisible(true)
+    const answer = props.form.getFieldValue('answer')
+    if (!answer) {
+      message.warning('请输入sql语句')
+      return
+    }
+    const postValue = {
+      answer
+    }
+    getTestAnswer(postValue).then(res => {
+      if (res.normalOperation) {
+        const resultList = res.resultList
+        const temColumns = []
+        if (resultList.length) {
+          const obj = resultList[0]
+          for (let key in obj) {
+            const temObj = {}
+            temObj.title = key
+            temObj.dataIndex = key
+            temObj.key = obj[key]
+            temColumns.push(temObj)
+          }
+        }
+        setColumns(temColumns)
+        setTableList(resultList)
+        setAnswerTrue(true)
+      } else {
+        setErrMessage(res.message)
+        setAnswerTrue(false)
+      }
+    })
+    setSqlTestVisible(true)
   }
   function onClose () {
     setSqlTestVisible(false)
@@ -133,8 +137,15 @@ const NormalLoginForm = props => {
           onClose={onClose}
           visible={sqlTestVisible}
         >
-          <Table columns={columns}
-        dataSource={tableList} pagination={false}/>
+          {answerTrue ? (
+            <Table
+              columns={columns}
+              dataSource={tableList}
+              pagination={false}
+            />
+          ) : (
+            <div style={{ color: 'red' }}>{errMessage}</div>
+          )}
         </Drawer>
       </Modal>
     </div>
