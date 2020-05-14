@@ -6,7 +6,7 @@ import {getLogin} from '../../api/index';
 import history from "../../util/history";
 
 let TeacherLoginForm = (props) => {
-  const {status, form}=props
+  const {status, form}=props 
   
   const { getFieldDecorator } = form;
   function handleSubmit(e) {
@@ -18,6 +18,8 @@ let TeacherLoginForm = (props) => {
             if(res.error==0){
                 message.success(res.message);
                 localStorage.setItem("token",res.token);
+                localStorage.setItem("status", res.status);
+                localStorage.setItem("userName", res.userName);
                 history.push('/main/teacher')
             }else{
                 message.error(res.message);
