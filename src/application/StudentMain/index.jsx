@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Form, Input, Icon, Radio, List, Card  } from "antd";
 
 import history from "../../util/history";
+import paperImg from "../../img/paper.png";
 
 import { getStudentPaper } from "../../api/index";
 
@@ -172,7 +173,7 @@ let StudentMainNormal = (props) => {
              onClick={() => toAnswer(item.paperId)}
               hoverable
               style={{ width: 250 }}
-              cover={<img alt="example" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyvOogWrVUxtF7GI-3-vefoqS8dHAiERkPkXc3Q2txyvlFkNuv&usqp=CAU" />}
+              cover={<img alt="example" src={paperImg} />}
             >
               <Meta title={item.paperName} description={`${item.school}-${item.userName}`} />
             </Card>
